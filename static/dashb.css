@@ -1,0 +1,62 @@
+#main {
+    background-color:darksalmon;
+    width:1280px;
+    min-height:665px;
+    height:auto;
+}
+
+#box {
+    background-color: beige;
+    width:auto;
+    min-height:665px;
+    height: auto;
+    margin-left: 140px;
+    margin-right: 140px;
+}
+.rating {
+    direction: rtl;
+    font-size: 2em;
+    display: flex;
+    justify-content: center;
+}
+  
+.rating input[type="radio"] {
+    display: none;
+}
+  
+.rating label {
+    color: lightgray;
+    cursor: pointer;
+}
+
+.rating label:hover,
+  .rating label:hover ~ label,
+  .rating input[type="radio"]:checked ~ label {
+    color: gold;
+}
+
+#profile {
+    width: 100px;
+    height: 50px;
+    margin-left : 900px;
+    margin-top: 20px;
+}
+
+.center-graph {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px; 
+}
+.chart-container {
+    display: flex;
+    gap: 20px; /* Space between charts */
+    justify-content: center;
+    align-items: center;
+}
+
+.chart {
+    max-width: 45%; /* Ensures each chart stays within 45% of the canvas width */
+    height: auto; /* Maintains aspect ratio */
+    border: 1px solid #ccc; /* Optional: adds a border around charts */
+}
