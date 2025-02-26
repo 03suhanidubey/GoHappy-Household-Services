@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Search</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/dashb.css">
+</head>
+<body>
+    <div id = "main">
+        <div id = "box">
+
+            <nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: #e3f2fd;">
+                <div class="container-fluid">
+                  <a class="navbar-brand" href="#">GoHappy Household Services</a>
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                      <a class="nav-link active" aria-current="page" href="/dashb_admin">Home</a>
+                      <a class="nav-link" href="#"><b>Search</b></a>
+                      <a class="nav-link" href="/summary_admin">Summary</a>
+                      <a class="nav-link" href="/login_admin">Logout</a>
+                    </div>
+                  </div>
+                </div>
+              </nav>
+              <br>
+
+              <form action="/search_admin" method="post">
+              <div class="row g-3 align-items-center">
+                <div class="col-auto">
+                    <label for="search_by" class="col-form-label">Search by:</label>
+                    <select class="form-select" id = "search_by" aria-label="Default select example" name = "search_by" required>
+                        <option selected>Select</option>
+                        <option value="2">Customer Name</option>
+                        <option value="3">Professional Name</option>
+                        <option value="4">Status</option>
+                      </select>
+                </div>
+                <div class="col-auto">
+                    <label for="search_text" class="col-form-label">Search for(in Service Requests):</label>
+                    <input type="text" id="search_text" class="form-control" aria-describedby="passwordHelpInline" name = "search_for" required>
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-secondary mb-3">Search</button>
+                </div>
+              </div>
+              </form>
+
+
+              <br>
+              {% if results %}
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Customer name</th>
+                    <th scope="col">Professional name</th>
+                    <th scope="col">Service</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Date Completed</th>
+                    <th scope="col">Rating</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for result in results %}
+                    <tr>
+                        <td>{{result.bookingid}}</td>
+                        <td>{{result.customers.fullname}}</td>
+                        <td>{{result.professionals.fullname}}</td>
+                        <td>{{result.professionals.service}}</td>
+                        <td>{{result.status}}</td>
+                        <td>{{result.datecompleted}}</td>
+                        <td>{{result.ratings}}</td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+            {% elif noresults%}
+                <h4>No results</h4>
+            {% else %}
+                <h4>Results appear here</h4>
+            {%endif%}
+
+        </div>
+    </div>
+</body>
+</html>

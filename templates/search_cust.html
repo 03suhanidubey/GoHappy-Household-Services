@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Search</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/dashb.css">
+</head>
+<body>
+    <div id = "main">
+        <div id = "box">
+            <nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: #e3f2fd;">
+                <div class="container-fluid">
+                  <a class="navbar-brand" href="#">GoHappy Household Services</a>
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                      <a class="nav-link active" aria-current="page" href="/dashb_customer/{{id}}">Home</a>
+                      <a class="nav-link" href="#"><b>Search</b></a>
+                      <a class="nav-link" href="/summary_customer/{{id}}">Summary</a>
+                      <a class="nav-link" href="/login_customer">Logout</a>
+                    </div>
+                  </div>
+                </div>
+              </nav>
+
+              <br>
+              <form action="/search_customer/{{id}}" method="post">
+                <div class="row g-3 align-items-center">
+                  <div class="col-auto">
+                      <label for="search_by" class="col-form-label">Search by:</label>
+                      <select class="form-select" id = "search_by" aria-label="Default select example" name = "search_by" required>
+                          <option selected>Select</option>
+                          <!-- <option value="1">Service</option> -->
+                          <option value="2">Address</option>
+                          <option value="3">Pincode</option>
+                          <option value="4">Professional Name</option>
+                        </select>
+                  </div>
+                  <div class="col-auto">
+                      <label for="search_text" class="col-form-label">Search for:</label>
+                      <input type="text" id="search_text" class="form-control" aria-describedby="passwordHelpInline" name = "search_for" required>
+                  </div>
+                  <div class="col-auto">
+                      <button type="submit" class="btn btn-secondary mb-3">Search</button>
+                  </div>
+                </div>
+                </form>
+  
+  
+                <br>
+              {% if results %}
+              <form action="/book/{{id}}" method="post">
+                <input type="hidden" id="bookingdate" name="date" required>
+                <script>
+                // Get today's date in YYYY-MM-DD format
+                const today = new Date().toISOString().split('T')[0];
+        
+                // Set the value of the hidden input field to today's date
+                document.getElementById('bookingdate').value = today;
+                </script>
+              <table class="table table-striped">
+                  <thead>
+                  <tr>
+                      <th scope="col">Professional name</th>
+                      <th scope="col">Service</th>
+                      <th scope="col">Description</th>
+                      <th scope="col">Address</th>
+                      <th scope="col">Pincode</th>
+                      <th scope="col">Experience</th>
+                      <th scope="col">Rating</th>
+                      <th scope="col">Book</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                      {% for result,service in results %}
+                      {% if result.active=="True" %}
+                        <tr>
+                            <td>{{result.fullname}}</td>
+                            <td>{{result.service}}</td>
+                            <td>{{service.descr}}</td>
+                            <td>{{result.address}}</td>
+                            <td>{{result.pincode}}</td>
+                            <td>{{result.experience}}</td>
+                            <td>{{result.avg_rating}}</td>
+                            <td><button type="submit" class="btn btn-info" value = "{{result.userid}}" name = "profesid">Book</button></td>
+                        </tr>
+                      {%else%}
+                      {%endif%}
+                      {%endfor%}
+                  </tbody>
+              </table>
+              </form>
+              {% elif noresults%}
+                  <h4>No results</h4>
+              {% else %}
+                  <h4>Results appear here</h4>
+              {%endif%}
+
+
+        </div>
+    </div>
+</body>
+</html>

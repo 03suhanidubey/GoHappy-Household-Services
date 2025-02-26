@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/dashb.css">
+</head>
+
+
+<body>
+<div id = "main">
+<div id = "box">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: #e3f2fd;">
+        <div class="container-fluid">
+        <a class="navbar-brand" href="#">GoHappy Household Services</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+        <a class="nav-link active" aria-current="page" href="/dashb_customer/{{id}}">Home</a>
+        <a class="nav-link" href="/search_customer/{{id}}">Search</a>
+        <a class="nav-link" href="/summary_customer/{{id}}">Summary</a>
+        <a class="nav-link" href="/login_customer">Logout</a>
+        </div>
+        </div>
+        </div>
+    </nav>
+
+    <form action="/book/{{id}}" method="post">
+        <input type="hidden" id="bookingdate" name="date" required>
+        <script>
+        // Get today's date in YYYY-MM-DD format
+        const today = new Date().toISOString().split('T')[0];
+
+        // Set the value of the hidden input field to today's date
+        document.getElementById('bookingdate').value = today;
+        </script>
+
+        <br>
+        <h2>Choose your {{service}} professional</h2>
+        {% if list %}
+        <table class ="table table-striped">
+
+        <thead>
+        <tr>
+        <th scope="col"> Name </th>
+        <th scope="col"> Experience </th>
+        <th scope="col"> Pincode </th>
+        <th scope="col"> Rating </th>
+        <th scope="col"> Book </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for l in list %}
+        {% if l.active == "True"%}
+            <tr>
+            <td>{{l.fullname}}</td>
+            <td>{{l.experience}}</td>
+            <td>{{l.pincode}}</td>
+            <td>{{l.avg_rating}}</td>
+            <td><button type="submit" class="btn btn-info" value = "{{l.userid}}" name = "profesid">Book</button></td>
+            </tr>
+        {% else %}
+        {% endif %}
+        {% endfor %}
+        </tbody> 
+        
+        </table>
+        {% else %}
+        <h1>No Profesionals</h1>
+        {% endif %}
+    </form>
+
+</div>
+</div>
+</body>
+</html>

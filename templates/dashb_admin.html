@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/dashb.css">
+</head>
+
+
+<body>
+<div id = "main">
+<div id = "box">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: #e3f2fd;">
+        <div class="container-fluid">
+        <a class="navbar-brand" href="#">GoHappy Household Services</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+        <a class="nav-link active" aria-current="page" href="#"><b>Home</b></a>
+        <a class="nav-link" href="/search_admin">Search</a>
+        <a class="nav-link" href="/summary_admin">Summary</a>
+        <a class="nav-link" href="/login_admin">Logout</a>
+        </div>
+        </div>
+        </div>
+    </nav>
+
+
+    <br>
+    <h2>Services:</h2>
+    {% if services %}
+    <table class ="table table-striped">
+
+        <thead>
+            <tr>
+            <th scope="col"> ID </th>
+            <th scope="col"> Name </th>
+            <th scope="col"> Description </th>
+            <th scope="col"> Base Price </th>
+            <th scope="col"> Options </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for s in services %}
+                <tr>
+                <td>{{s.id}}</td>
+                <td>{{s.name}}</td>
+                <td>{{s.descr}}</td>
+                <td>{{s.baseprice}}</td>
+                <!-- button -->
+                <td><button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#staticBackdrop{{s.id}}">Edit</button>
+                <a href="/deleteservice/{{s.id}}"><div type="button" class="btn btn-secondary">Delete</div></td></a>
+                <form action = '/editservice/{{s.id}}' method ='post'>
+                <!-- Modal -->
+                <div class="modal fade" id="staticBackdrop{{s.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit service</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <div class="mb-3">
+                <label for="name" class="col-form-label">Name of service</label>
+                <input type="text" class="form-control" id="name" name="name" value ={{s.name}}>
+                </div>
+                <div class="mb-3">
+                <label for="description" class="col-form-label">Description</label>
+                <textarea rows = "3" class="form-control" id="description" name="descr" value ={{s.descr}}>{{s.descr}}</textarea>
+                </div>
+                <div class="mb-3">
+                <label for="baseprice" class="col-form-label">Base price</label>
+                <input type="number" class="form-control" id="baseprice" name="baseprice" value ={{s.baseprice}}>
+                </div>
+                </div>
+                <div class="modal-footer">
+                <button type="submit" class="btn btn-info" data-bs-dismiss="modal">Save changes</button>
+                </div>
+                </div>
+                </div>
+                </div>
+                </form>
+                </tr>
+            {% endfor %}
+        </tbody> 
+
+    </table>
+    {% else %}
+    <br>
+    <h4>No Services</h4>
+    <br>
+    {% endif %}
+
+<form action="/dashb_admin" method="post">
+
+<!-- <button type="button" class="btn btn-info btn-lg">+ New Service</button> -->
+<button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">+ New Service</button>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<h1 class="modal-title fs-5" id="exampleModalLabel">Fill the details of the service</h1>
+<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+<!-- <form action="/dashb_admin" method="post"> -->
+<div class="mb-3">
+<label for="recipient-name" class="col-form-label">Name</label>
+<input type="text" class="form-control" id="recipient-name" name="name">
+</div>
+<div class="mb-3">
+<label for="message-text" class="col-form-label">Description</label>
+<textarea class="form-control" id="message-text" name="descr"></textarea>
+</div>
+<div class="mb-3">
+<label for="recipient-name" class="col-form-label">Base Price</label>
+<input type="number" class="form-control" id="recipient-name" name="baseprice">
+</div>
+</form>
+</div>
+<div class="modal-footer">
+<button type="submit" class="btn btn-primary">Add Service</button>
+</div>
+</div>
+</div>
+</div>
+</form>
+<br>
+<h2>Professionals:</h2>
+
+{% if professionals %}
+<table class ="table table-striped">
+
+    <thead>
+        <tr>
+        <th scope="col"> ID </th>
+        <th scope="col"> Name </th>
+        <th scope="col"> Service </th>
+        <th scope="col"> Document </th>
+        <th scope="col"> Action </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for professional in professionals %}
+        <tr>
+            <td>{{professional.userid}}</td>
+            <td>{{professional.fullname}}</td>
+            <td>{{professional.service}}</td>
+            <td><a href="{{ url_for('view_file', filename=professional.docs) }}" target="_blank">View</a> | 
+                <a href="{{ url_for('download_file', filename=professional.docs) }}">Download</a></td>
+            {% if professional.active == "None" %}
+                <td><a href="/approve/{{professional.userid}}" type="button" class="btn btn-info">Approve</a>
+                    <a href="/block/{{professional.userid}}" type="button" class="btn btn-info">Reject</a></td>
+            {% elif professional.active == "True"%}
+                <td><a href="/block/{{professional.userid}}" type="button" class="btn btn-info">Block</a></td>
+            {% else %}
+                <td>Blocked/Rejected</td>
+            {%endif%}
+        </tr>
+        {%endfor%}
+    </tbody>
+</table>
+{%else%}
+    <h3>No professionals</h3>
+{%endif%}
+<br>
+
+<h2>Service History:</h2>
+{% if servicereqs %}
+<table class ="table table-striped">
+
+    <thead>
+        <tr>
+        <th scope="col"> ID </th>
+        <th scope="col"> Customer </th>
+        <th scope="col"> Professional </th>
+        <th scope="col"> Date Requested </th>
+        <th scope="col"> Status </th>
+        <th scope="col"> Date Completed </th>
+        <th scope="col"> Rating </th>
+        <th scope="col"> Remarks </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for request, customer_name, professional_name in servicereqs %}
+        <tr>
+            <td>{{ request.bookingid }}</td>
+            <td>{{ customer_name }}</td>
+            <td>{{ professional_name }}</td>
+            <td>{{ request.datecreated }}</td>
+            <td>{{ request.status }}</td>
+            <td>{{ request.datecompleted }}</td>
+            <td>{{ request.ratings }}</td>
+            <td>{{ request.remarks }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <h4> No services yet</h4>
+{%endif%}
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>         
+</body>
+</html>
